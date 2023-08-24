@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Post } from './entities/post.entity';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class PostsService {
+  constructor(@InjectModel("Post") private postModel: Model<Post>) {}
   create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+    return this.postModel.create(createPostDto);
   }
 
   findAll() {
-    return `This action returns all posts`;
+    return this.postModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  findOne(id: any) {
+    return this.postModel.findOne({_id: id}).exec();
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  update(id: any, updatePostDto: UpdatePostDto) {
+    return this.postModel.findOneAndUpdate({ _id: id },{ updatePostDto} ).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  remove(id: any) {
+    return this.postModel.findOneAndRemove({_id: id}).exec();
   }
 }
