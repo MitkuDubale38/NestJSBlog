@@ -4,6 +4,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { Pagination } from 'src/helpers/pagination';
 
 @Injectable()
 export class PostsService {
@@ -12,10 +13,9 @@ export class PostsService {
     return this.postModel.create(createPostDto);
   }
 
-  findAll() {
-    return this.postModel.find();
+  findAll(pagination: any) {
+    return Pagination.paginate(pagination.limit,pagination.page, this.postModel.find());
   }
-
   findOne(id: any) {
     return this.postModel.findOne({_id: id}).exec();
   }
