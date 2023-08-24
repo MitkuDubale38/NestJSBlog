@@ -14,7 +14,9 @@ export class PostsService {
   }
 
   findAll(pagination: any) {
-    return Pagination.paginate(pagination.limit,pagination.page, this.postModel.find());
+    const paginationClass:Pagination = new Pagination();
+    console.log(this.postModel.length);
+    return paginationClass.paginate(pagination.limit,pagination.page, this.postModel.find(), this.postModel.length);
   }
   findOne(id: any) {
     return this.postModel.findOne({_id: id}).exec();
@@ -23,7 +25,7 @@ export class PostsService {
   update(id: any, updatePostDto: UpdatePostDto) {
     return this.postModel.findOneAndUpdate({ _id: id },{ updatePostDto} ).exec();
   }
-
+ 
   remove(id: any) {
     return this.postModel.findOneAndRemove({_id: id}).exec();
   }
