@@ -1,9 +1,3 @@
-interface PaginationMetadata {
-    total: number;
-    page: number;
-    limit: number;
-  }
-
 export class Pagination{
     async  paginate(limit: number, page: number, data: any, totalCount: number): Promise<any> {
        var result =  await data.limit(limit).skip(limit * (page-1)).exec();
@@ -19,7 +13,6 @@ export class Pagination{
            currentPage: parseInt(page?.toString()),
            isLastPage,
         },
-        
       };
       return response;
      }
