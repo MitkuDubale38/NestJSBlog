@@ -14,6 +14,6 @@ export class Pagination{
            isLastPage,
         },
       };
-      return response;
+      return (limit!=null && page != null) ? response : result;
      }
    }
