@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
@@ -14,36 +14,56 @@ export class PostsService {
   }
   async findAll(pagination: any) {
     const paginationClass: Pagination = new Pagination();
-    return paginationClass.paginate(
-      pagination.limit,
-      pagination.page,
-      this.postModel.find(),
-      (await this.postModel.find()).length,
-    );
+    try {
+      return paginationClass.paginate(
+        pagination.limit,
+        pagination.page,
+        this.postModel.find(),
+        (await this.postModel.find()).length,
+      );
+    } catch (err) {
+      throw err;
+    }
   }
   async search(query: any): Promise<any[]> {
     const posts = await this.postModel.find().exec();
-    var result = posts.filter(
-      (post) =>
-        post.title.includes(query) ||
-        post.body.includes(query) ||
-        post.author.includes(query),
-    );
-    return result;
+    try {
+      var result = posts.filter(
+        (post) =>
+          post.title.includes(query) ||
+          post.body.includes(query) ||
+          post.author.includes(query),
+      );
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
   async findOne(id: any) {
-    var post = await this.postModel.findOne({ _id: id }).exec();
-    if (!post) {
-      throw new NotFoundException('Post not found');
+    try {
+      var post = await this.postModel.findOne({ _id: id }).exec();
+      if (!post) {
+        throw new HttpException('Post not found', 404);
+      }
+      return post;
+    } catch (err) {
+      throw err;
     }
-    return post;
   }
-  update(id: any, updatePostDto: UpdatePostDto) {
-    return this.postModel
-      .findOneAndUpdate({ _id: id }, { updatePostDto })
-      .exec();
+  async update(id: any, updatePostDto: UpdatePostDto) {
+    try {
+      return await this.postModel
+        .findOneAndUpdate({ _id: id }, { updatePostDto })
+        .exec();
+    } catch (err) {
+      throw err;
+    }
   }
-  remove(id: any) {
-    return this.postModel.findOneAndRemove({ _id: id }).exec();
+  async remove(id: any) {
+    try {
+      return await this.postModel.findOneAndRemove({ _id: id }).exec();
+    } catch (err) {
+      throw err;
+    }
   }
 }
