@@ -10,6 +10,7 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: ['1'],
   });
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('Blog API')
     .setDescription('Blog API description')
