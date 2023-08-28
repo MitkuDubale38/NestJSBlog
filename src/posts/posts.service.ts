@@ -1,14 +1,14 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { Post } from './entities/post.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pagination } from 'src/helpers/pagination';
+import { IPost } from './interfaces/post.interface';
 
 @Injectable()
 export class PostsService {
-  constructor(@InjectModel('Post') private postModel: Model<Post>) {}
+  constructor(@InjectModel('Post') private postModel: Model<IPost>) {}
   create(createPostDto: CreatePostDto) {
     return this.postModel.create(createPostDto);
   }

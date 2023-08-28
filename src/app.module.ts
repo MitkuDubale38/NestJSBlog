@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     PostsModule,
@@ -16,6 +18,11 @@ import { APP_GUARD } from '@nestjs/core';
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
+    }),
+    PassportModule,
+    JwtModule.register({
+      secret: 'testkey',
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   providers: [
