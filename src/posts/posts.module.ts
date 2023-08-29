@@ -10,4 +10,3 @@ import { PostSchema } from './entities/post.entity';
   providers: [PostsService],
 })
 export class PostsModule {}
-
