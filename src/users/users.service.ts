@@ -1,26 +1,35 @@
 import { Injectable, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
+  constructor(@InjectModel('User') private userModel: Model<User>) {}
+
+  //
   async createUser(createUserDto: CreateUserDto) {
-    var user = await this.userModel.create(createUserDto);
-    return user;
+    try {
+      console.log(createUserDto);
+      const user = new this.userModel(createUserDto);
+      this.userModel.create(createUserDto);
+      console.log(user);
+      return await user.save();
+    } catch (err) {
+      throw err;
+    }
   }
 
-  async getUsers(): Promise<IUser[]> {
+  async getUsers(): Promise<User[]> {
     return await this.userModel.find().exec();
   }
 
-  async findById(id: string): Promise<IUser | null> {
+  async findById(id: string): Promise<User | null> {
     return this.userModel.findById(id).exec();
   }
 
-  async findByUsername(username: string): Promise<IUser | null> {
+  async findByUsername(username: string): Promise<User | null> {
     return this.userModel.findOne({ username }).exec();
   }
 

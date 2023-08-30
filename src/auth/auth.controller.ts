@@ -7,6 +7,10 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Post()
+  async register(@Body() CreateUserDto: CreateUserDto) {
+    return await this.authService.register(CreateUserDto);
+  }
   @Post('login')
   async login(
     @Body('password') password: string,
@@ -14,11 +18,5 @@ export class AuthController {
   ): Promise<any> {
     const token = await this.authService.login(username, password);
     return { token };
-  }
-
-  @Post('register')
-  async register(@Body() CreateUserDto: CreateUserDto): Promise<any> {
-    const user = await this.authService.register(CreateUserDto);
-    return { user };
   }
 }
