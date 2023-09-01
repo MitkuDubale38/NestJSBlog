@@ -8,13 +8,10 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-  //
   async createUser(createUserDto: CreateUserDto) {
     try {
-      console.log(createUserDto);
       const user = new this.userModel(createUserDto);
       this.userModel.create(createUserDto);
-      console.log(user);
       return await user.save();
     } catch (err) {
       throw err;

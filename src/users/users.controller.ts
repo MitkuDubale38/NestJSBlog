@@ -8,24 +8,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
-  //   @Post('/signup')
-  //   async createUser(
-  //     @Body('password') password: string,
-  //     @Body('username') username: string,
-  //   ): Promise<User> {
-  //     const saltOrRounds = 10;
-  //     const hashedPassword = await bcrypt.hash(password, saltOrRounds);
-  //     const result = await this.usersService.createUser(username, hashedPassword);
-  //     return result;
-  //   }
-
-  //   @UseGuards(AuthGuard('jwt'))
-  @Post('signup')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.createUser(createUserDto);
-    
-  }
-
   @Get()
   async getUser() {
     return this.usersService.getUsers();
