@@ -13,7 +13,7 @@ import {
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { AccessTokenGuard } from 'src/guard/accessToken.guard';
 @ApiTags('posts')
@@ -21,12 +21,14 @@ import { AccessTokenGuard } from 'src/guard/accessToken.guard';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AccessTokenGuard)
   @Post()
   async create(@Body(new ValidationPipe()) createPostDto: CreatePostDto) {
     return await this.postsService.create(createPostDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AccessTokenGuard)
   @Throttle(8, 60)
   @Get('search')
@@ -35,6 +37,7 @@ export class PostsController {
     return await this.postsService.search(query);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AccessTokenGuard)
   @UseGuards(ThrottlerGuard)
   @Get()
@@ -44,6 +47,7 @@ export class PostsController {
     return await this.postsService.findAll(pagination);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AccessTokenGuard)
   @Throttle(8, 60)
   @Get(':id')
@@ -52,6 +56,7 @@ export class PostsController {
     return await this.postsService.findOne(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AccessTokenGuard)
   @Patch(':id')
   @ApiParam({ name: 'id' })
@@ -59,6 +64,7 @@ export class PostsController {
     return await this.postsService.update(id, updatePostDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AccessTokenGuard)
   @Delete(':id')
   @ApiParam({ name: 'id' })
