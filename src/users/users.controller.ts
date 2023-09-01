@@ -1,33 +1,42 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
-import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
-  //   @Post('/signup')
-  //   async createUser(
-  //     @Body('password') password: string,
-  //     @Body('username') username: string,
-  //   ): Promise<User> {
-  //     const saltOrRounds = 10;
-  //     const hashedPassword = await bcrypt.hash(password, saltOrRounds);
-  //     const result = await this.usersService.createUser(username, hashedPassword);
-  //     return result;
-  //   }
+  constructor(private readonly usersService: UsersService) {}
 
-  //   @UseGuards(AuthGuard('jwt'))
-  @Post('signup')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.createUser(createUserDto);
-    
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
 
   @Get()
-  async getUser() {
-    return this.usersService.getUsers();
+  findAll() {
+    return this.usersService.findAll();
+  }
+
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.usersService.findById(id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.usersService.remove(id);
   }
 }
