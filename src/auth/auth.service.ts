@@ -48,10 +48,6 @@ export class AuthService {
   async logout(userId: string) {
     return this.usersService.update(userId, {
       refreshToken: null,
-      name: '',
-      username: '',
-      email: '',
-      password: '',
     });
   }
 
@@ -63,10 +59,6 @@ export class AuthService {
     const hashedRefreshToken = await this.hashData(refreshToken);
     await this.usersService.update(userId, {
       refreshToken: hashedRefreshToken,
-      name: '',
-      username: '',
-      email: '',
-      password: '',
     });
   }
 
