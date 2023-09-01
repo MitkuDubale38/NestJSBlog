@@ -1,5 +1,4 @@
-import { Document } from 'mongoose';
-export interface IUser extends Document {
+export class UpdateUserDto {
   name: string;
   username: string;
   email: string;
