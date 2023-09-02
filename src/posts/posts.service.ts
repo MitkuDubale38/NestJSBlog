@@ -27,21 +27,30 @@ export class PostsService {
     }
   }
   async search(query: any): Promise<any[]> {
-    const posts = await this.postModel.find().find().populate('author', null, User.name).exec();
-      const result = posts.filter(
-        (post) =>
-          post.title.includes(query) ||
-          post.body.includes(query) ||
-          post.author.includes(query),
-      );
-      return result;
-    } catch (err) {
-      throw err;
-    }
+    const posts = await this.postModel
+      .find()
+      .find()
+      .populate('author', null, User.name)
+      .exec();
+    const result = posts.filter(
+      (post) =>
+        post.title.includes(query) ||
+        post.body.includes(query) ||
+        post.author.includes(query),
+    );
+    return result;
   }
+  catch(err) {
+    throw err;
+  }
+
   async findOne(id: any) {
     try {
-      const post = await this.postModel.findOne({ _id: id })..find().populate('author', null, User.name).exec();
+      const post = await this.postModel
+        .findOne({ _id: id })
+        .find()
+        .populate('author', null, User.name)
+        .exec();
       if (!post) {
         throw new HttpException('Post not found', 404);
       }
