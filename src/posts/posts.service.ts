@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pagination } from 'src/helpers/pagination';
 import { IPost } from './interfaces/post.interface';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PostsService {
@@ -18,7 +19,7 @@ export class PostsService {
       return paginationClass.paginate(
         pagination.limit,
         pagination.page,
-        this.postModel.find(),
+        this.postModel.find().populate('author', null, User.name).exec(),
         (await this.postModel.find()).length,
       );
     } catch (err) {
@@ -26,9 +27,8 @@ export class PostsService {
     }
   }
   async search(query: any): Promise<any[]> {
-    const posts = await this.postModel.find().exec();
-    try {
-      var result = posts.filter(
+    const posts = await this.postModel.find().find().populate('author', null, User.name).exec();
+      const result = posts.filter(
         (post) =>
           post.title.includes(query) ||
           post.body.includes(query) ||
@@ -41,7 +41,7 @@ export class PostsService {
   }
   async findOne(id: any) {
     try {
-      var post = await this.postModel.findOne({ _id: id }).exec();
+      const post = await this.postModel.findOne({ _id: id })..find().populate('author', null, User.name).exec();
       if (!post) {
         throw new HttpException('Post not found', 404);
       }
