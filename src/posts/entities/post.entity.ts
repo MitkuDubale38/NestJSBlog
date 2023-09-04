@@ -1,9 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { User } from 'src/users/entities/user.entity';
-import { Document, Types } from 'mongoose';
+import { Types } from 'mongoose';
+import { IPost } from '../interfaces/post.interface';
 
 @Schema()
-export class Post extends Document {
+export class Post implements IPost {
   @Prop()
   title: string;
 

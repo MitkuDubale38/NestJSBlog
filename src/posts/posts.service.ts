@@ -15,34 +15,31 @@ export class PostsService {
   }
   async findAll(pagination: any) {
     const paginationClass: Pagination = new Pagination();
-    try {
-      return paginationClass.paginate(
-        pagination.limit,
-        pagination.page,
-        this.postModel.find().populate('author', null, User.name).exec(),
-        (await this.postModel.find()).length,
-      );
-    } catch (err) {
-      throw err;
-    }
+    // try {
+    //   return paginationClass.paginate(
+    //     pagination.limit,
+    //     pagination.page,
+    //     this.postModel.find().exec(),
+    //     (await this.postModel.find()).length,
+    //   );
+    // } catch (err) {
+    //   throw err;
+    // }
+    return await this.postModel.find().populate('author').exec();
   }
   async search(query: any): Promise<any[]> {
     const posts = await this.postModel
       .find()
-      .find()
       .populate('author', null, User.name)
       .exec();
     const result = posts.filter(
-      (post) =>
-        post.title.includes(query) ||
-        post.body.includes(query) ||
-        post.author.includes(query),
+      (post) => post.title.includes(query) || post.body.includes(query),
     );
     return result;
   }
   catch(err) {
     throw err;
-  }
+  } 
 
   async findOne(id: any) {
     try {
