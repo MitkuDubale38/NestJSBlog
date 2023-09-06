@@ -43,8 +43,8 @@ export class PostsController {
   @Get()
   @ApiQuery({ name: 'limit' })
   @ApiQuery({ name: 'page' })
-  async findAll(@Query() pagination) {
-    return await this.postsService.findAll(pagination);
+  async findAll() {
+    return await this.postsService.findAll();
   }
 
   @ApiBearerAuth('JWT-auth')

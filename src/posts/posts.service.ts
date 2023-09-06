@@ -3,7 +3,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Pagination } from 'src/helpers/pagination';
+// import { Pagination } from 'src/helpers/pagination';
 import { IPost } from './interfaces/post.interface';
 import { User } from 'src/users/entities/user.entity';
 
@@ -13,8 +13,8 @@ export class PostsService {
   create(createPostDto: CreatePostDto) {
     return this.postModel.create(createPostDto);
   }
-  findAll(pagination: any) {
-    const paginationClass: Pagination = new Pagination();
+  async findAll() {
+    // const paginationClass: Pagination = new Pagination();
     // try {
     //   return paginationClass.paginate(
     //     pagination.limit,
@@ -39,7 +39,7 @@ export class PostsService {
   }
   catch(err) {
     throw err;
-  } 
+  }
 
   async findOne(id: any) {
     try {
