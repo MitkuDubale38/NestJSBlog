@@ -13,7 +13,7 @@ export class PostsService {
   create(createPostDto: CreatePostDto) {
     return this.postModel.create(createPostDto);
   }
-  async findAll(pagination: any) {
+  findAll(pagination: any) {
     const paginationClass: Pagination = new Pagination();
     // try {
     //   return paginationClass.paginate(
@@ -25,7 +25,7 @@ export class PostsService {
     // } catch (err) {
     //   throw err;
     // }
-    return await this.postModel.find().populate('author').exec();
+    return this.postModel.find().populate('author');
   }
   async search(query: any): Promise<any[]> {
     const posts = await this.postModel
